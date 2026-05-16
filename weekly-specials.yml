@@ -3,7 +3,6 @@ name: Weekly Supermarket Specials
 on:
   schedule:
     - cron: '0 8 * * 1'
-  
   workflow_dispatch:
 
 jobs:
@@ -11,20 +10,20 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
       
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: '18'
       
-      - name: Run supermarket specials checker
+      - name: Run checker
         run: node supermarket_checker.js
+        continue-on-error: true
       
-      - name: Commit and push results
+      - name: Commit results
         run: |
-          git config user.name "Specials Bot"
+          git config user.name "Bot"
           git config user.email "bot@example.com"
           git add supermarket_specials.html || true
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Update supermarket specials" && git push)
+          git commit -m "Update specials" || true
+          git push || true
