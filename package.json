@@ -1,0 +1,6 @@
+{
+  "name": "supermarket-specials",
+  "version": "1.0.0",
+  "description": "Automatically checks supermarket specials weekly",
+  "main": "supermarket_checker.js"
+}
