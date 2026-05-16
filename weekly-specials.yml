@@ -2,10 +2,8 @@ name: Weekly Supermarket Specials
 
 on:
   schedule:
-    # Run every Monday at 8 AM UTC (10 PM Sunday Hawaii time)
     - cron: '0 8 * * 1'
   
-  # Also allow manual triggering from GitHub UI
   workflow_dispatch:
 
 jobs:
@@ -14,21 +12,19 @@ jobs:
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
       
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
           node-version: '18'
       
       - name: Run supermarket specials checker
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: node supermarket_checker.js
       
       - name: Commit and push results
         run: |
           git config user.name "Specials Bot"
           git config user.email "bot@example.com"
-          git add supermarket_specials.html
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Update supermarket specials - $(date)" && git push)
+          git add supermarket_specials.html || true
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update supermarket specials" && git push)
